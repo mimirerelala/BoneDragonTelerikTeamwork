@@ -3,34 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace Snake
 {
     class Program
     {
-        //tatic char[,] ImageToDisplay = { 
-        //                               { 'z', 'z', 'z', 'z', 'z', 'z','z','z','z','z','z','z'}, 
-        //                               { 'z', 'z', 'z', 'z', 'z', 'z','z','z','z','z','z','z'}, 
-        //                               { 'z', 'z', 'z', 'z', 'z', 'z','z','z','z','z','z','z'}, 
-        //                               { 'z', 'z', 'z', 'z', 'z', 'z','z','z','z','z','z','z'}, 
-        //                               { 'z', 'z', 'z', 'z', 'z', 'z','z','z','z','z','z','z'}, 
-        //                               { 'z', 'z', 'z', 'z', 'z', 'z','z','z','z','z','z','z'}, 
-        //                               { 'z', 'z', 'z', 'z', 'z', 'z','z','z','z','z','z','z'}, 
-        //                               {'z', 'z', 'z', 'z', 'z', 'z' ,'z','z','z','z','z','z'}, 
-        //                               { 'z', 'z', 'z', 'z', 'z', 'z','z','z','z','z','z','z'},   
-        //                               { 'z', 'z', 'z', 'z', 'z', 'z','z','z','z','z','z','z'},
-        //                               { 'z', 'z', 'z', 'z', 'z', 'z','z','z','z','z','z','z'}, 
-        //                               { 'z', 'z', 'z', 'z', 'z', 'z','z','z','z','z','z','z'}, 
-        //                               { 'r', 'r', 'r', 'r', 'r', 'r','z','z','z','z','z','z'}, 
-        //                               { 'z', 'z', 'z', 'z', 'r', 'r','z','z','z','z','z','z'}, 
-        //                               { 'z', 'z', 'z', 'z', 'r', 'r','z','z','z','z','z','z'}, 
-        //                               { 'z', 'z', 'z', 'z', 'z', 'z','z','z','z','z','z','z'},   
-        //
-        //                               };
-        //
-
-
-        public static Queue<Position> snakePieces = new Queue<Position>();
+        
         struct Position
         {
             public int row;
@@ -44,8 +23,6 @@ namespace Snake
 
         static void Main(string[] args)
         {
-
-
             Console.Title = "Dragon-Snake";
             Console.WindowHeight = 60;
             Console.WindowWidth = 130;
@@ -63,9 +40,34 @@ namespace Snake
                 }
                 Console.WriteLine(' ');
             }
+            Queue<Position> snakePieces = new Queue<Position>();
 
             Console.SetCursorPosition(10, 10);
-            snakePieces.Enqueue({5,5});
+            Console.BackgroundColor = ConsoleColor.Red;
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            int row = 16;
+            snakePieces.Enqueue(new Position(10, 10));
+            snakePieces.Enqueue(new Position(12, 10));
+            snakePieces.Enqueue(new Position(14, 10));
+            snakePieces.Enqueue(new Position(16, 10));
+
+            while (true)
+            {
+                foreach (Position p in snakePieces)
+                {
+                    Console.SetCursorPosition(p.row, p.col);
+                    Console.Write("  ");
+
+                }
+                Position PositionToDelete = snakePieces.Dequeue();
+                Console.SetCursorPosition(PositionToDelete.row, PositionToDelete.col);
+                Console.BackgroundColor = ConsoleColor.White;
+                Console.Write("  ");
+                Console.BackgroundColor = ConsoleColor.Red;
+                row += 2;              
+                snakePieces.Enqueue(new Position(row%130, 10));
+                Thread.Sleep(10);               
+            }
 
 
             //   for (int i = 0; i < ImageToDisplay.GetLength(0); i++)
