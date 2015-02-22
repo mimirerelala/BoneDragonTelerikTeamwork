@@ -51,7 +51,22 @@ namespace Snake
         {
             //TODO
             //Clear game field
+
+            Console.Title = "Dragon-Snake";
+            Console.WindowHeight = 60;
+            Console.WindowWidth = 130;
+            Console.BufferHeight = 60;
+            Console.BufferWidth = 133;
+            //add PlayIntro() options
+            //add Menu() with options
+            DrawField(ConsoleColor.White);
+
+
+
         }
+
+
+
 
         public static void ClearSnake()
         {
@@ -106,5 +121,22 @@ namespace Snake
             //TODO
             //Read highscores from file and save them to Highscores struct
         }
+
+
+        public static void DrawField(ConsoleColor ConsoleBackgroundColor)
+        {
+
+            Console.BackgroundColor = ConsoleBackgroundColor;
+            for (int i = 0; i < Console.WindowHeight; i++)
+            {
+                for (int j = 0; j < Console.WindowWidth; j++)
+                {
+                    Console.Write(' ');
+                }
+                Console.WriteLine(' ');
+            }
+            Console.SetCursorPosition(0, 0);
+        }
+
     }
 }
