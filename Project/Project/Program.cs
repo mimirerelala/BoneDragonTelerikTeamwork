@@ -14,11 +14,14 @@ namespace Project
             Console.WindowWidth = gameWidth;
             Console.BufferWidth = gameWidth;
             Console.WindowHeight = gameHeight;
-            Console.BufferHeight = Console.WindowHeight + 3;
+            Console.BufferHeight = Console.WindowHeight + 1;
             Console.OutputEncoding = Encoding.GetEncoding(1252);
-            
-            PrintBorders();
-            PrintInfoPannel();
+
+            while (true)
+            {
+                PrintBorders();
+                PrintInfoPannel();
+            }
             
             
         }
