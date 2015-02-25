@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Snake
 {
-    class Snake
+    public class Snake
     {
-        struct Position
+        public struct Position
         {
             public int row;
             public int col;
@@ -19,7 +19,7 @@ namespace Snake
             }
         }
 
-        struct Score
+        public struct Score
         {
             public string name;
             public int result;
