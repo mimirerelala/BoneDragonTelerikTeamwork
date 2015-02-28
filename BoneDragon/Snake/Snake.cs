@@ -20,6 +20,12 @@ namespace Snake
             }
         }
 
+        public struct Fruit
+        {
+            public char symbol;
+            public Position position;
+        }
+
         public struct Score
         {
             public string name;
@@ -46,14 +52,31 @@ namespace Snake
             };
 
             Random randomNumbersGenerator = new Random();
-            DirectionEnum direction = DirectionEnum.right;
 
-            ClearGameField();
+            //ClearGameField();
+            PrintMenu();
 
             Console.SetCursorPosition(10, 10);
             Console.BackgroundColor = ConsoleColor.Red;
             Console.ForegroundColor = ConsoleColor.Yellow;
-            int row = 16;
+            //int row = 16;
+            //GenerateSnake();
+
+            //while (true)
+            //{
+            //    DrawSnake();
+            //    
+            //    Console.BackgroundColor = ConsoleColor.Red;
+            //    row += 2;
+            //    snakePieces.Enqueue(new Position(row % 100, 10));
+            //    Thread.Sleep(10);
+            //}
+        }
+
+        public static void PlayGame()
+        {
+            DirectionEnum direction = DirectionEnum.right;
+            ClearGameField();
             GenerateSnake();
 
             while (true)
@@ -89,6 +112,12 @@ namespace Snake
             snakePieces.Enqueue(new Position(12, 10));
             snakePieces.Enqueue(new Position(14, 10));
             snakePieces.Enqueue(new Position(16, 10));
+        }
+
+        public static void GenerateFruit()
+        {
+            //TODO
+            //Print fruit
         }
 
         private static void DrawSnake(DirectionEnum direction)
@@ -176,7 +205,29 @@ namespace Snake
         public static void PrintMenu()
         {
             //TODO
-            //Print game Menu
+            Console.SetCursorPosition(0, 0);
+            Console.WriteLine("Please choose one");
+            Console.WriteLine("1. Play New Game");
+            Console.WriteLine("2. High Score");
+            Console.WriteLine("3. Exit");
+            Console.Write("Enter your choice: ");
+            int choice;
+            bool isParsed = int.TryParse(Console.ReadLine(),out choice);
+            if (isParsed)
+            {
+                switch (choice)
+                {
+                    case 1: PlayGame(); break;
+                    case 2: PrintHighScore(); break;
+                    case 3: Environment.Exit(0); break;
+                    default: Console.WriteLine("Invalid argument for choice!"); PrintMenu(); break;
+                }
+            }
+            else
+            {
+                Console.WriteLine("Invalid argument for choice!"); PrintMenu();
+            }
+            
         }
 
         /// <summary>
