@@ -20,6 +20,12 @@ namespace Snake
             }
         }
 
+        public struct Fruit
+        {
+            public char symbol;
+            public Position position;
+        }
+
         public struct Score
         {
             public string name;
@@ -90,6 +96,12 @@ namespace Snake
             snakePieces.Enqueue(new Position(12, 10));
             snakePieces.Enqueue(new Position(14, 10));
             snakePieces.Enqueue(new Position(16, 10));
+        }
+
+        public static void GenerateFruit()
+        {
+            //TODO
+            //Print fruit
         }
 
         private static void DrawSnake()
