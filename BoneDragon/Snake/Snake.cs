@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Snake
@@ -45,6 +46,45 @@ namespace Snake
             };
 
             Random randomNumbersGenerator = new Random();
+
+            ClearGameField();
+
+            Console.SetCursorPosition(10, 10);
+            Console.BackgroundColor = ConsoleColor.Red;
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            int row = 16;
+            GenerateSnake();
+
+            while (true)
+            {
+                DrawSnake();
+                
+                Console.BackgroundColor = ConsoleColor.Red;
+                row += 2;
+                snakePieces.Enqueue(new Position(row % 100, 10));
+                Thread.Sleep(10);
+            }
+        }
+
+        private static void GenerateSnake()
+        {
+            snakePieces.Enqueue(new Position(10, 10));
+            snakePieces.Enqueue(new Position(12, 10));
+            snakePieces.Enqueue(new Position(14, 10));
+            snakePieces.Enqueue(new Position(16, 10));
+        }
+
+        private static void DrawSnake()
+        {
+            foreach (Position p in snakePieces)
+            {
+                Console.SetCursorPosition(p.row, p.col);
+                Console.Write("  ");
+            }
+            Position PositionToDelete = snakePieces.Dequeue();
+            Console.SetCursorPosition(PositionToDelete.row, PositionToDelete.col);
+            Console.BackgroundColor = ConsoleColor.White;
+            Console.Write("  ");
         }
 
         public static void ClearGameField()
@@ -53,20 +93,14 @@ namespace Snake
             //Clear game field
 
             Console.Title = "Dragon-Snake";
-            Console.WindowHeight = 60;
-            Console.WindowWidth = 130;
-            Console.BufferHeight = 60;
-            Console.BufferWidth = 133;
+            Console.WindowHeight = 50;
+            Console.WindowWidth = 100;
+            Console.BufferHeight = 50;
+            Console.BufferWidth = 103;
             //add PlayIntro() options
             //add Menu() with options
             DrawField(ConsoleColor.White);
-
-
-
         }
-
-
-
 
         public static void ClearSnake()
         {
@@ -125,8 +159,9 @@ namespace Snake
 
         public static void DrawField(ConsoleColor ConsoleBackgroundColor)
         {
-
+            //map 65 x60
             Console.BackgroundColor = ConsoleBackgroundColor;
+            Console.ForegroundColor = ConsoleColor.Red;
             for (int i = 0; i < Console.WindowHeight; i++)
             {
                 for (int j = 0; j < Console.WindowWidth; j++)
@@ -135,8 +170,6 @@ namespace Snake
                 }
                 Console.WriteLine(' ');
             }
-            Console.SetCursorPosition(0, 0);
         }
-
     }
 }
