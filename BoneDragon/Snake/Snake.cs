@@ -40,6 +40,7 @@ namespace Snake
         public static uint sleepTime = 1000;
         public static Queue<Position> snakePieces = new Queue<Position>();
         public static List<Score> highScores = new List<Score>();
+        public static string username;
 
         static void Main(string[] args)
         {
@@ -75,6 +76,8 @@ namespace Snake
 
         public static void PlayGame()
         {
+            Console.Write("Input Username:");
+            username = Console.ReadLine();
             ClearGameField();
             GenerateSnake();
             int row = 16;
@@ -86,7 +89,7 @@ namespace Snake
                 Console.BackgroundColor = ConsoleColor.Red;
                 row += 2;
                 snakePieces.Enqueue(new Position(row % 100, 10));
-                Thread.Sleep(10);
+                Thread.Sleep(30);
             }
         }
 
@@ -166,8 +169,8 @@ namespace Snake
             {
                 switch (choice)
                 {
-                    case 1: PlayGame(); break;
-                    case 2: PrintHighScore(); break;
+                    case 1: Console.Clear(); PlayGame(); break;
+                    case 2: Console.Clear(); PrintHighScore(); break;
                     case 3: Environment.Exit(0); break;
                     default: Console.WriteLine("Invalid argument for choice!"); PrintMenu(); break;
                 }
