@@ -51,7 +51,7 @@ namespace Snake
         {
             //TODO
             //Clear game field
-
+            Console.WriteLine("hi");
             Console.Title = "Dragon-Snake";
             Console.WindowHeight = 60;
             Console.WindowWidth = 130;
