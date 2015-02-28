@@ -37,7 +37,7 @@ namespace Snake
             }
         }
 
-        public static uint sleepTime = 1000;
+        public static int sleepTime = 500;
         public static Queue<Position> snakePieces = new Queue<Position>();
         public static List<Score> highScores = new List<Score>();
         public static string username;
@@ -76,20 +76,36 @@ namespace Snake
 
         public static void PlayGame()
         {
+			DirectionEnum direction = DirectionEnum.right;
             Console.Write("Input Username:");
             username = Console.ReadLine();
             ClearGameField();
             GenerateSnake();
-            int row = 16;
 
             while (true)
             {
-                DrawSnake();
-
-                Console.BackgroundColor = ConsoleColor.Red;
-                row += 2;
-                snakePieces.Enqueue(new Position(row % 100, 10));
-                Thread.Sleep(30);
+                if (Console.KeyAvailable)
+                {
+                    ConsoleKeyInfo userInput = Console.ReadKey(true);
+                    if (userInput.Key == ConsoleKey.LeftArrow)
+                    {
+                        if (direction != DirectionEnum.right) direction = DirectionEnum.left;
+                    }
+                    if (userInput.Key == ConsoleKey.RightArrow)
+                    {
+                        if (direction != DirectionEnum.left) direction = DirectionEnum.right;
+                    }
+                    if (userInput.Key == ConsoleKey.DownArrow)
+                    {
+                        if (direction != DirectionEnum.down) direction = DirectionEnum.up;
+                    }
+                    if (userInput.Key == ConsoleKey.UpArrow)
+                    {
+                        if (direction != DirectionEnum.up) direction = DirectionEnum.down;
+                    }
+                }
+                DrawSnake(direction);
+                Thread.Sleep(sleepTime);
             }
         }
 
@@ -107,13 +123,48 @@ namespace Snake
             //Print fruit
         }
 
-        private static void DrawSnake()
+        private static void DrawSnake(DirectionEnum direction)
         {
+            Position newHead;
+            Position head = snakePieces.LastOrDefault();
+            switch (direction)
+            {
+                case DirectionEnum.right:
+                    newHead = new Position((head.row + 2)%100, head.col);
+                    snakePieces.Enqueue(newHead);
+                    break;
+                case DirectionEnum.left:
+                    if (head.row < 2)
+                    {
+                        head.row += 100;
+                    }
+                    newHead = new Position(head.row - 2, head.col);
+                    snakePieces.Enqueue(newHead);
+                    break;
+                case DirectionEnum.down:
+                    if (head.col < 1)
+                    {
+                        head.col += 50;
+                    }
+                    newHead = new Position(head.row, head.col - 1);
+                    snakePieces.Enqueue(newHead);
+                    break;
+                case DirectionEnum.up:
+                    newHead = new Position(head.row, (head.col + 1)%50);
+                    snakePieces.Enqueue(newHead);
+                    break;
+                default:
+                    break;
+            }
+
+            Console.BackgroundColor = ConsoleColor.Red;
+
             foreach (Position p in snakePieces)
             {
                 Console.SetCursorPosition(p.row, p.col);
                 Console.Write("  ");
             }
+
             Position PositionToDelete = snakePieces.Dequeue();
             Console.SetCursorPosition(PositionToDelete.row, PositionToDelete.col);
             Console.BackgroundColor = ConsoleColor.White;
