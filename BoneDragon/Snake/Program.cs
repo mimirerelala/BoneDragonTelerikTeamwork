@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Snake
 {
-    public class Snake
+    class Snake
     {
-        public struct Position
+        struct Position
         {
             public int row;
             public int col;
@@ -20,7 +19,7 @@ namespace Snake
             }
         }
 
-        public struct Score
+        struct Score
         {
             public string name;
             public int result;
@@ -46,77 +45,24 @@ namespace Snake
             };
 
             Random randomNumbersGenerator = new Random();
-
-            //ClearGameField();
-            PrintMenu();
-
-            Console.SetCursorPosition(10, 10);
-            Console.BackgroundColor = ConsoleColor.Red;
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            //int row = 16;
-            //GenerateSnake();
-
-            //while (true)
-            //{
-            //    DrawSnake();
-            //    
-            //    Console.BackgroundColor = ConsoleColor.Red;
-            //    row += 2;
-            //    snakePieces.Enqueue(new Position(row % 100, 10));
-            //    Thread.Sleep(10);
-            //}
-        }
-
-        public static void PlayGame()
-        {
-            ClearGameField();
-            GenerateSnake();
-            int row = 16;
-
-            while (true)
-            {
-                DrawSnake();
-
-                Console.BackgroundColor = ConsoleColor.Red;
-                row += 2;
-                snakePieces.Enqueue(new Position(row % 100, 10));
-                Thread.Sleep(10);
-            }
-        }
-
-        private static void GenerateSnake()
-        {
-            snakePieces.Enqueue(new Position(10, 10));
-            snakePieces.Enqueue(new Position(12, 10));
-            snakePieces.Enqueue(new Position(14, 10));
-            snakePieces.Enqueue(new Position(16, 10));
-        }
-
-        private static void DrawSnake()
-        {
-            foreach (Position p in snakePieces)
-            {
-                Console.SetCursorPosition(p.row, p.col);
-                Console.Write("  ");
-            }
-            Position PositionToDelete = snakePieces.Dequeue();
-            Console.SetCursorPosition(PositionToDelete.row, PositionToDelete.col);
-            Console.BackgroundColor = ConsoleColor.White;
-            Console.Write("  ");
         }
 
         public static void ClearGameField()
         {
             //TODO
             //Clear game field
+
             Console.Title = "Dragon-Snake";
-            Console.WindowHeight = 50;
-            Console.WindowWidth = 100;
-            Console.BufferHeight = 50;
-            Console.BufferWidth = 103;
+            Console.WindowHeight = 60;
+            Console.WindowWidth = 130;
+            Console.BufferHeight = 60;
+            Console.BufferWidth = 133;
             //add PlayIntro() options
             //add Menu() with options
             DrawField(ConsoleColor.White);
+
+
+
         }
 
         public static void ClearSnake()
@@ -142,29 +88,7 @@ namespace Snake
         public static void PrintMenu()
         {
             //TODO
-            Console.SetCursorPosition(0, 0);
-            Console.WriteLine("Please choose one");
-            Console.WriteLine("1. Play New Game");
-            Console.WriteLine("2. High Score");
-            Console.WriteLine("3. Exit");
-            Console.Write("Enter your choice: ");
-            int choice;
-            bool isParsed = int.TryParse(Console.ReadLine(),out choice);
-            if (isParsed)
-            {
-                switch (choice)
-                {
-                    case 1: PlayGame(); break;
-                    case 2: PrintHighScore(); break;
-                    case 3: Environment.Exit(0); break;
-                    default: Console.WriteLine("Invalid argument for choice!"); PrintMenu(); break;
-                }
-            }
-            else
-            {
-                Console.WriteLine("Invalid argument for choice!"); PrintMenu();
-            }
-            
+            //Print game Menu
         }
 
         /// <summary>
@@ -198,9 +122,8 @@ namespace Snake
 
         public static void DrawField(ConsoleColor ConsoleBackgroundColor)
         {
-            //map 65 x60
+
             Console.BackgroundColor = ConsoleBackgroundColor;
-            Console.ForegroundColor = ConsoleColor.Red;
             for (int i = 0; i < Console.WindowHeight; i++)
             {
                 for (int j = 0; j < Console.WindowWidth; j++)
@@ -209,6 +132,8 @@ namespace Snake
                 }
                 Console.WriteLine(' ');
             }
+            Console.SetCursorPosition(0, 0);
         }
+
     }
 }
