@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="DirectionEnum.cs" />
     <Compile Include="FileHandler.cs" />
+    <Compile Include="MapElementsEnum.cs" />
     <Compile Include="Snake.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

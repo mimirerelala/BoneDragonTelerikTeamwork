@@ -20,10 +20,11 @@ namespace Snake
             }
         }
 
-        public struct Fruit
+        public struct MapElement
         {
             public char symbol;
             public Position position;
+            public MapElementsEnum type;
         }
 
         public struct Score
@@ -40,6 +41,7 @@ namespace Snake
         public static int sleepTime = 500;
         public static Queue<Position> snakePieces = new Queue<Position>();
         public static List<Score> highScores = new List<Score>();
+        public static List<MapElement> mapElements = new List<MapElement>();
         public static string username;
 
         static void Main(string[] args)
@@ -154,21 +156,76 @@ namespace Snake
                     snakePieces.Enqueue(newHead);
                     break;
                 default:
+                    throw new ArgumentException("Snake has unknown direction.");
                     break;
             }
 
-            Console.BackgroundColor = ConsoleColor.Red;
+            MapElementsEnum headHitType = CollisionDetection(newHead);
 
-            foreach (Position p in snakePieces)
+            switch (headHitType)
             {
-                Console.SetCursorPosition(p.row, p.col);
-                Console.Write("  ");
+                case MapElementsEnum.None:
+                    Console.BackgroundColor = ConsoleColor.Red;
+
+                    foreach (Position p in snakePieces)
+                    {
+                        Console.SetCursorPosition(p.row, p.col);
+                        Console.Write("  ");
+                    }
+
+                    Position PositionToDelete = snakePieces.Dequeue();
+                    Console.SetCursorPosition(PositionToDelete.row, PositionToDelete.col);
+                    Console.BackgroundColor = ConsoleColor.White;
+                    Console.Write("  ");
+                    break;
+                case MapElementsEnum.Rock:
+                    SnakeIsDeath();
+                    break;
+                case MapElementsEnum.Fruit:
+                    Console.BackgroundColor = ConsoleColor.Red;
+
+                    foreach (Position p in snakePieces)
+                    {
+                        Console.SetCursorPosition(p.row, p.col);
+                        Console.Write("  ");
+                    }
+                    break;
+                case MapElementsEnum.Snake:
+                    SnakeIsDeath();
+                    break;
+                default:
+                    break;
             }
 
-            Position PositionToDelete = snakePieces.Dequeue();
-            Console.SetCursorPosition(PositionToDelete.row, PositionToDelete.col);
-            Console.BackgroundColor = ConsoleColor.White;
-            Console.Write("  ");
+            
+        }
+
+        private static void SnakeIsDeath()
+        {
+            ///TODO 
+            ///Handle GAME OVER
+            throw new NotImplementedException();
+        }
+
+        private static MapElementsEnum CollisionDetection(Position newHead)
+        {
+            foreach (MapElement item in mapElements)
+            {
+                if ((item.position.col == newHead.col) && (item.position.row == newHead.row))
+                {
+                    return item.type;
+                }
+            }
+
+            foreach (Position item in snakePieces)
+            {
+                if ((item.col == newHead.col) && (item.row == newHead.row))
+                {
+                    return MapElementsEnum.Snake;
+                }
+            }
+
+            return MapElementsEnum.None;
         }
 
         public static void ClearGameField()
