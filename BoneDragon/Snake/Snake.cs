@@ -266,6 +266,7 @@ namespace Snake
         {
             //TODO
             Console.SetCursorPosition(0, 0);
+            Console.ForegroundColor = ConsoleColor.DarkRed;
             Console.WriteLine("Please choose one");
             Console.WriteLine("1. Play New Game");
             Console.WriteLine("2. High Score");
