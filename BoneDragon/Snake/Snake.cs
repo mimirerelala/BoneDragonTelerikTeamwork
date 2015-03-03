@@ -42,7 +42,7 @@ namespace Snake
         public static Queue<Position> snakePieces = new Queue<Position>();
         public static List<Score> highScores = new List<Score>();
         public static List<MapElement> mapElements = new List<MapElement>();
-        public static string username;
+
         public static string scoresFileName = "scores.xml";
         static string[] menuEntries = { "NEW GAME", "HALL OF FAME", "EXIT" };
 
@@ -81,8 +81,6 @@ namespace Snake
         public static void PlayGame()
         {
 			DirectionEnum direction = DirectionEnum.right;
-            Console.Write("Input Username:");
-            username = Console.ReadLine();
             ClearGameField();
             GenerateSnake();
 
@@ -180,7 +178,7 @@ namespace Snake
                     Console.Write("  ");
                     break;
                 case MapElementsEnum.Rock:
-                    SnakeIsDeath();
+                    SnakeIsDeath(0); // TODO: pass current score
                     break;
                 case MapElementsEnum.Fruit:
                     Console.BackgroundColor = ConsoleColor.Red;
@@ -192,7 +190,7 @@ namespace Snake
                     }
                     break;
                 case MapElementsEnum.Snake:
-                    SnakeIsDeath();
+                    SnakeIsDeath(0); // TODO: pass current score
                     break;
                 default:
                     break;
@@ -201,14 +199,38 @@ namespace Snake
             
         }
 
-        private static void SnakeIsDeath()
+        private static void SnakeIsDeath(int currentScore)
         {
-            // FileHandler scoreFile = new FileHandler(scoresFileName);
-            // if (!scoreFile.IsUserNamePresent(<passed username>) {
-            //      scoreFile.SaveUserScore(<passed username>, <passed score>);
-            // }
-
-            // And also print a neat game over message.
+            FileHandler scoreFile = new FileHandler(scoresFileName);
+            if (scoreFile.IsScoreSaveable(currentScore)) 
+            {
+                string congratulationsMessage = "CONGRATULATIONS, YOU MADE IT TO THE TOP!";
+                Console.SetCursorPosition(Console.WindowWidth / 2 - congratulationsMessage.Length / 2, Console.WindowHeight / 2 - 3);
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine(congratulationsMessage);
+                Console.SetCursorPosition(Console.WindowWidth / 2 - 20, Console.WindowHeight / 2 - 1);
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("ENTER A USERNAME: ");
+                Console.SetCursorPosition(Console.WindowWidth / 2 - 2, Console.WindowHeight / 2 - 1);
+                scoreFile.SaveUserScore(Console.ReadLine(), currentScore);
+                // Go to main menu or quit
+            }
+            else
+            {
+                string gameoverMessage = "GAME OVER";
+                Console.SetCursorPosition(Console.WindowWidth / 2 - gameoverMessage.Length / 2, Console.WindowHeight / 2 - 1);
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine(gameoverMessage);
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                string scoreMessage = string.Format("SCORE: {0}", currentScore);
+                Console.SetCursorPosition(Console.WindowWidth / 2 - scoreMessage.Length / 2, Console.WindowHeight / 2);
+                Console.WriteLine(scoreMessage);
+                string quitMessage = "(Press \"Esc\" to quit)";
+                Console.ForegroundColor = ConsoleColor.DarkCyan;
+                Console.SetCursorPosition(Console.WindowWidth / 2 - quitMessage.Length / 2, Console.WindowHeight / 2 + 2);
+                Console.WriteLine(quitMessage);
+                // Handle input
+            }
         }
 
         private static MapElementsEnum CollisionDetection(Position newHead)

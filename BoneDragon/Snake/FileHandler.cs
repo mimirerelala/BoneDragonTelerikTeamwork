@@ -85,11 +85,17 @@ namespace Snake
             }
         }
 
+        // Optional: use only if usernames have to be unique.
         public bool IsUsernamePresent(string userName)
         {
             XElement root = XElement.Load(this._fileName);
             return root.Elements("Player").Where(x => x.Element("Username").Value == userName).Any();
         }
 
+        public bool IsScoreSaveable(int score)
+        {
+            XElement root = XElement.Load(this._fileName);
+            return root.Elements("Player").Where(x => int.Parse(x.Element("Score").Value) < score).Any();
+        }
     }
 }
