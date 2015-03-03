@@ -129,8 +129,23 @@ namespace Snake
 
         public static void GenerateRock(Random rng)
         {
-            //TODO
-            //Print fruit
+            Position rock;
+            do
+            {
+                rock = new Position(rng.Next(0, 50) * 2,
+                    rng.Next(0, 50));
+            }
+            while (snakePieces.Contains(rock) || mapElements.Any(e => e.position.col == rock.col && e.position.row == rock.row));
+
+            MapElement newElement = new MapElement()
+            {
+                position = rock,
+                type = MapElementsEnum.Rock
+            };
+            mapElements.Add(newElement);
+            Console.SetCursorPosition(rock.row, rock.col);
+            Console.BackgroundColor = ConsoleColor.Gray;
+            Console.Write("  ");
         }
 
         private static void DrawSnake(DirectionEnum direction, Random rng)
