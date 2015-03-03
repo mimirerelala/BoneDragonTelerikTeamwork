@@ -267,6 +267,7 @@ namespace Snake
 
         public static void PrintMenu()
         {
+<<<<<<< HEAD
             Console.SetBufferSize(Console.WindowWidth, Console.WindowHeight);
             Console.CursorVisible = false;
 
