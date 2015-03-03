@@ -43,6 +43,7 @@ namespace Snake
         public static List<Score> highScores = new List<Score>();
         public static List<MapElement> mapElements = new List<MapElement>();
         public static string username;
+        public static string scoresFileName = "scores.xml";
         static string[] menuEntries = { "NEW GAME", "HALL OF FAME", "EXIT" };
 
         static void Main(string[] args)
@@ -202,9 +203,9 @@ namespace Snake
 
         private static void SnakeIsDeath()
         {
-            // FileHandler scoreFile = new FileHandler("scores.xml");
-            // if (!scoreFile.IsUserNamePresent("Gosho") {
-            //      scoreFile.SaveUserScore("Gosho", 10);
+            // FileHandler scoreFile = new FileHandler(scoresFileName);
+            // if (!scoreFile.IsUserNamePresent(<passed username>) {
+            //      scoreFile.SaveUserScore(<passed username>, <passed score>);
             // }
 
             // And also print a neat game over message.
@@ -267,7 +268,6 @@ namespace Snake
 
         public static void PrintMenu()
         {
-<<<<<<< HEAD
             Console.SetBufferSize(Console.WindowWidth, Console.WindowHeight);
             Console.CursorVisible = false;
 
@@ -350,9 +350,8 @@ namespace Snake
         /// </summary>
         public static void PrintHighScores()
         {
-            // FileHandler scoreFile = new FileHandler("scores.xml");
-            // scoreFile.PrintScores();
-            throw new NotImplementedException();
+            FileHandler scoreFile = new FileHandler(scoresFileName);
+            scoreFile.PrintScores();
         }
 
 

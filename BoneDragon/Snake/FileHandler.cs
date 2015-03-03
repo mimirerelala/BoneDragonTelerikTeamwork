@@ -67,18 +67,21 @@ namespace Snake
             }
         }
 
-        // TODO: Integrate this with the high scores menu function.
         public void PrintScores()
         {
             XElement root = XElement.Load(this._fileName);
             IEnumerable<XElement> players = root.Elements();
-            Console.WriteLine("High Scores");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.SetCursorPosition(Console.WindowWidth / 2 - 6, 1);
+            Console.WriteLine("HALL OF FAME\n");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine("{0,-15} | {1,15:F2} | {2,43}", "Username", "Score", "Date");
+            Console.Write(new string('-', Console.BufferWidth));
             foreach (var player in players)
             {
-                Console.Write("Username: {0} ", player.Element("Username").Value);
-                Console.Write("Score: {0} ", player.Element("Score").Value);
-                Console.Write("Date: {0} ", player.Element("Date").Value);
-                Console.WriteLine();
+                Console.WriteLine("{0,-15} | {1,15:F2} | {2,43}", player.Element("Username").Value, player.Element("Score").Value, player.Element("Date").Value);
             }
         }
 
