@@ -95,7 +95,9 @@ namespace Snake
         public bool IsScoreSaveable(int score)
         {
             XElement root = XElement.Load(this._fileName);
-            return root.Elements("Player").Where(x => int.Parse(x.Element("Score").Value) < score).Any();
+            bool isHighScore = root.Elements("Player").Where(x => int.Parse(x.Element("Score").Value) < score).Any();
+            bool hasScorePlace = root.Elements("Player").ToList().Count < 10;
+            return isHighScore || hasScorePlace;
         }
     }
 }

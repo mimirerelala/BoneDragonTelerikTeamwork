@@ -58,6 +58,7 @@ namespace Snake
 			DirectionEnum direction = DirectionEnum.right;
             ClearGameField();
             GenerateSnake();
+            isSnakeAlive = true;
 
             Random rng = new Random();
             GenerateFruit(rng);
@@ -100,6 +101,7 @@ namespace Snake
 
         private static void GenerateSnake()
         {
+            snakePieces.Clear();
             snakePieces.Enqueue(new Position(10, 10));
             snakePieces.Enqueue(new Position(12, 10));
             snakePieces.Enqueue(new Position(14, 10));
@@ -231,35 +233,38 @@ namespace Snake
         {
             isSnakeAlive = false;
             FileHandler scoreFile = new FileHandler(scoresFileName);
-            
+            Console.Clear();
+            Console.BackgroundColor = ConsoleColor.Black;
             if (scoreFile.IsScoreSaveable(currentScore)) 
             {
                 string congratulationsMessage = "CONGRATULATIONS, YOU MADE IT TO THE TOP!";
-                Console.SetCursorPosition(Console.WindowWidth / 2 - congratulationsMessage.Length / 2, Console.WindowHeight / 2 - 3);
+                Console.SetCursorPosition((Console.WindowWidth / 2) - (congratulationsMessage.Length / 2), (Console.WindowHeight / 2) - 3);
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(congratulationsMessage);
-                Console.SetCursorPosition(Console.WindowWidth / 2 - 20, Console.WindowHeight / 2 - 1);
+                Console.SetCursorPosition((Console.WindowWidth / 2) - 20, (Console.WindowHeight / 2) - 1);
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("ENTER A USERNAME: ");
-                Console.SetCursorPosition(Console.WindowWidth / 2 - 2, Console.WindowHeight / 2 - 1);
+                Console.SetCursorPosition((Console.WindowWidth / 2) - 2, (Console.WindowHeight / 2) - 1);
                 scoreFile.SaveUserScore(Console.ReadLine(), currentScore);
                 // Go to main menu or quit
+                PrintMenu();
             }
             else
             {
                 string gameoverMessage = "GAME OVER";
-                Console.SetCursorPosition(Console.WindowWidth / 2 - gameoverMessage.Length / 2, Console.WindowHeight / 2 - 1);
+                Console.SetCursorPosition((Console.WindowWidth / 2) - (gameoverMessage.Length / 2), (Console.WindowHeight / 2) - 1);
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(gameoverMessage);
                 Console.ForegroundColor = ConsoleColor.DarkGray;
                 string scoreMessage = string.Format("SCORE: {0}", currentScore);
-                Console.SetCursorPosition(Console.WindowWidth / 2 - scoreMessage.Length / 2, Console.WindowHeight / 2);
+                Console.SetCursorPosition((Console.WindowWidth / 2) - (scoreMessage.Length / 2), Console.WindowHeight / 2);
                 Console.WriteLine(scoreMessage);
-                string quitMessage = "(Press \"Esc\" to quit)";
+                string quitMessage = "(Press any key to go back to menu!)";
                 Console.ForegroundColor = ConsoleColor.DarkCyan;
-                Console.SetCursorPosition(Console.WindowWidth / 2 - quitMessage.Length / 2, Console.WindowHeight / 2 + 2);
+                Console.SetCursorPosition((Console.WindowWidth / 2) - (quitMessage.Length / 2), (Console.WindowHeight / 2) + 2);
                 Console.WriteLine(quitMessage);
                 // Handle input
+                PrintMenu();
             }
         }
 
