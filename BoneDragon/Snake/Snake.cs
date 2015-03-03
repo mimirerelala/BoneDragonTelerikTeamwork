@@ -38,7 +38,7 @@ namespace Snake
             }
         }
 
-        public static int sleepTime = 500;
+        public static int sleepTime = 50;
         public static int score = 0;
         public static Queue<Position> snakePieces = new Queue<Position>();
         public static List<Score> highScores = new List<Score>();
@@ -47,6 +47,9 @@ namespace Snake
 
         public static string scoresFileName = "scores.xml";
         static string[] menuEntries = { "NEW GAME", "HALL OF FAME", "EXIT" };
+        public static ConsoleColor[] colors = (ConsoleColor[])ConsoleColor.GetValues(typeof(ConsoleColor));
+        public static ConsoleColor currentSnakeColor = colors[4];
+
 
         static void Main(string[] args)
         {
@@ -62,6 +65,7 @@ namespace Snake
 
             Random rng = new Random();
             GenerateFruit(rng);
+
 
             while (isSnakeAlive)
             {
@@ -84,6 +88,11 @@ namespace Snake
                     {
                         if (direction != DirectionEnum.up) direction = DirectionEnum.down;
                     }
+                    if (userInput.Key == ConsoleKey.Spacebar)
+                    {
+                        currentSnakeColor = colors[rng.Next(0, colors.Length)];
+                    }
+
                 }
                 DrawSnake(direction,rng);
                 score += 500 * snakePieces.Count / sleepTime;
@@ -186,7 +195,7 @@ namespace Snake
             switch (headHitType)
             {
                 case MapElementsEnum.None:
-                    Console.BackgroundColor = ConsoleColor.Red;
+                    Console.BackgroundColor = currentSnakeColor;
 
                     foreach (Position p in snakePieces)
                     {
@@ -203,7 +212,7 @@ namespace Snake
                     SnakeIsDeath(score); // TODO: pass current score
                     break;
                 case MapElementsEnum.Fruit:
-                    Console.BackgroundColor = ConsoleColor.Red;
+                    Console.BackgroundColor = colors[rng.Next(0, colors.Length)];
 
                     foreach (Position p in snakePieces)
                     {
