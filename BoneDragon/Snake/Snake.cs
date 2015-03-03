@@ -43,6 +43,7 @@ namespace Snake
         public static List<Score> highScores = new List<Score>();
         public static List<MapElement> mapElements = new List<MapElement>();
         public static string username;
+        static string[] menuEntries = { "NEW GAME", "HALL OF FAME", "EXIT" };
 
         static void Main(string[] args)
         {
@@ -157,7 +158,6 @@ namespace Snake
                     break;
                 default:
                     throw new ArgumentException("Snake has unknown direction.");
-                    break;
             }
 
             MapElementsEnum headHitType = CollisionDetection(newHead);
@@ -202,9 +202,12 @@ namespace Snake
 
         private static void SnakeIsDeath()
         {
-            ///TODO 
-            ///Handle GAME OVER
-            throw new NotImplementedException();
+            // FileHandler scoreFile = new FileHandler("scores.xml");
+            // if (!scoreFile.IsUserNamePresent("Gosho") {
+            //      scoreFile.SaveUserScore("Gosho", 10);
+            // }
+
+            // And also print a neat game over message.
         }
 
         private static MapElementsEnum CollisionDetection(Position newHead)
@@ -264,58 +267,91 @@ namespace Snake
 
         public static void PrintMenu()
         {
-            //TODO
-            Console.SetCursorPosition(0, 0);
-            Console.WriteLine("Please choose one");
-            Console.WriteLine("1. Play New Game");
-            Console.WriteLine("2. High Score");
-            Console.WriteLine("3. Exit");
-            Console.Write("Enter your choice: ");
-            int choice;
-            bool isParsed = int.TryParse(Console.ReadLine(),out choice);
-            if (isParsed)
+            Console.SetBufferSize(Console.WindowWidth, Console.WindowHeight);
+            Console.CursorVisible = false;
+
+            bool exitedMenu = false;
+            int currentSelectionIndex = 0;
+            do
             {
-                switch (choice)
+                while (!Console.KeyAvailable && exitedMenu == false)
                 {
-                    case 1: Console.Clear(); PlayGame(); break;
-                    case 2: Console.Clear(); PrintHighScore(); break;
-                    case 3: Environment.Exit(0); break;
-                    default: Console.WriteLine("Invalid argument for choice!"); PrintMenu(); break;
+                    PrintMenuSelection(currentSelectionIndex);
+                    ConsoleKeyInfo currentModifier = Console.ReadKey();
+                    switch (currentModifier.Key)
+                    {
+                        case ConsoleKey.DownArrow:
+                            currentSelectionIndex += 1;
+                            if (currentSelectionIndex > menuEntries.Length - 1)
+                            {
+                                currentSelectionIndex = 0;
+                            }
+                            break;
+                        case ConsoleKey.UpArrow:
+                            currentSelectionIndex -= 1;
+                            if (currentSelectionIndex < 0)
+                            {
+                                currentSelectionIndex = menuEntries.Length - 1;
+                            }
+                            break;
+                        case ConsoleKey.Enter:
+                            switch (currentSelectionIndex)
+                            {
+                                case 0:
+                                    Console.Clear();
+                                    PlayGame();
+                                    break;
+                                case 1:
+                                    Console.Clear();
+                                    PrintHighScores();
+                                    break;
+                                case 2:
+                                    Environment.Exit(0);
+                                    break;
+                            }
+                            exitedMenu = true;
+                            break;
+                    }
                 }
-            }
-            else
+            } while (Console.ReadKey(true).Key != ConsoleKey.Escape);
+        }
+
+        public static void PrintMenuSelection(int currentSelectionIndex)
+        {
+            Console.Clear();
+            Console.WriteLine("                      __    __    __    __");
+            Console.WriteLine("                     /  \\  /  \\  /  \\  /  \\");
+            Console.WriteLine("____________________/  __\\/  __\\/  __\\/  __\\___________________________________");
+            Console.WriteLine("___________________/  /__/  /__/  /__/  /______________________________________");
+            Console.WriteLine("                  | / \\   / \\   / \\   / \\  \\____");
+            Console.WriteLine("                  |/   \\_/   \\_/   \\_/   \\    o \\");
+            Console.WriteLine("                                           \\_____/--<");
+            int initialStart = Console.WindowHeight / 2 - (int)Math.Ceiling((double)menuEntries.Length / 2);
+            int menuSpacing = 0;
+            for (int i = 0; i < menuEntries.Length; i++)
             {
-                Console.WriteLine("Invalid argument for choice!"); PrintMenu();
+                Console.SetCursorPosition(Console.WindowWidth / 2 - (int)Math.Ceiling((double)menuEntries[i].Length / 2), initialStart + menuSpacing);
+                menuSpacing += 1;
+                if (i == currentSelectionIndex)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine(menuEntries[i]);
+                    Console.ForegroundColor = ConsoleColor.White;
+                    continue;
+                }
+
+                Console.WriteLine(menuEntries[i]);
             }
-            
         }
 
         /// <summary>
-        /// Print 10 best to Console
+        /// Print top ten scores from the file
         /// </summary>
-        public static void PrintHighScore()
+        public static void PrintHighScores()
         {
-            //TODO
-            //Print HighScores
-            //don't make reading from file here
-        }
-
-        /// <summary>
-        /// Saves highscores to file
-        /// </summary>
-        public static void SaveHighScore()
-        {
-            //TODO
-            //Save highscores to file
-        }
-
-        /// <summary>
-        /// Reads highscores from file and saves into runtime struct
-        /// </summary>
-        public static void ReadHighScore()
-        {
-            //TODO
-            //Read highscores from file and save them to Highscores struct
+            // FileHandler scoreFile = new FileHandler("scores.xml");
+            // scoreFile.PrintScores();
+            throw new NotImplementedException();
         }
 
 
