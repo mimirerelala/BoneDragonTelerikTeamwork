@@ -39,6 +39,7 @@ namespace Snake
         }
 
         public static int sleepTime = 500;
+        public static int score = 0;
         public static Queue<Position> snakePieces = new Queue<Position>();
         public static List<Score> highScores = new List<Score>();
         public static List<MapElement> mapElements = new List<MapElement>();
@@ -49,13 +50,7 @@ namespace Snake
 
         static void Main(string[] args)
         {
-            Random randomNumbersGenerator = new Random();
-
             PrintMenu();
-
-            Console.SetCursorPosition(10, 10);
-            Console.BackgroundColor = ConsoleColor.Red;
-            Console.ForegroundColor = ConsoleColor.Yellow;
         }
 
         public static void PlayGame()
@@ -63,6 +58,9 @@ namespace Snake
 			DirectionEnum direction = DirectionEnum.right;
             ClearGameField();
             GenerateSnake();
+
+            Random rng = new Random();
+            GenerateFruit(rng);
 
             while (isSnakeAlive)
             {
@@ -86,8 +84,17 @@ namespace Snake
                         if (direction != DirectionEnum.up) direction = DirectionEnum.down;
                     }
                 }
-                DrawSnake(direction);
+                DrawSnake(direction,rng);
+                score += 500 * snakePieces.Count / sleepTime;
                 Thread.Sleep(sleepTime);
+                if (sleepTime%50==0)
+                {
+                    GenerateRock(rng);
+                }
+                if (sleepTime > 10)
+                {
+                    sleepTime--;
+                }
             }
         }
 
@@ -99,13 +106,34 @@ namespace Snake
             snakePieces.Enqueue(new Position(16, 10));
         }
 
-        public static void GenerateFruit()
+        public static void GenerateFruit(Random rng)
+        {
+            Position food;
+            do
+            {
+                food = new Position(rng.Next(0, 50)*2,
+                    rng.Next(0, 50));
+            }
+            while (snakePieces.Contains(food) || mapElements.Any(e=>e.position.col == food.col && e.position.row == food.row));
+            
+            MapElement newElement = new MapElement()
+            {
+                position = food,
+                type = MapElementsEnum.Fruit
+            };
+            mapElements.Add(newElement);
+            Console.SetCursorPosition(food.row, food.col);
+            Console.BackgroundColor = ConsoleColor.Green;
+            Console.Write("  ");
+        }
+
+        public static void GenerateRock(Random rng)
         {
             //TODO
             //Print fruit
         }
 
-        private static void DrawSnake(DirectionEnum direction)
+        private static void DrawSnake(DirectionEnum direction, Random rng)
         {
             Position newHead;
             Position head = snakePieces.LastOrDefault();
@@ -155,7 +183,7 @@ namespace Snake
                     Console.Write("  ");
                     break;
                 case MapElementsEnum.Rock:
-                    SnakeIsDeath(0); // TODO: pass current score
+                    SnakeIsDeath(score); // TODO: pass current score
                     break;
                 case MapElementsEnum.Fruit:
                     Console.BackgroundColor = ConsoleColor.Red;
@@ -165,9 +193,17 @@ namespace Snake
                         Console.SetCursorPosition(p.row, p.col);
                         Console.Write("  ");
                     }
+                    score++;
+                    mapElements.Remove(
+                        new MapElement(){
+                            position = newHead,
+                            type = MapElementsEnum.Fruit
+                        }
+                        );
+                    GenerateFruit(rng);
                     break;
                 case MapElementsEnum.Snake:
-                    SnakeIsDeath(0); // TODO: pass current score
+                    SnakeIsDeath(score); // TODO: pass current score
                     break;
                 default:
                     break;
