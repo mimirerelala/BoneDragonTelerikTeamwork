@@ -42,40 +42,20 @@ namespace Snake
         public static Queue<Position> snakePieces = new Queue<Position>();
         public static List<Score> highScores = new List<Score>();
         public static List<MapElement> mapElements = new List<MapElement>();
+        public static bool isSnakeAlive = true;
 
         public static string scoresFileName = "scores.xml";
         static string[] menuEntries = { "NEW GAME", "HALL OF FAME", "EXIT" };
 
         static void Main(string[] args)
         {
-            Position[] directions = new Position[]
-            {
-                new Position(0, 1), // right
-                new Position(0, -1), // left
-                new Position(1, 0), // down
-                new Position(-1, 0), // up
-            };
-
             Random randomNumbersGenerator = new Random();
 
-            //ClearGameField();
             PrintMenu();
 
             Console.SetCursorPosition(10, 10);
             Console.BackgroundColor = ConsoleColor.Red;
             Console.ForegroundColor = ConsoleColor.Yellow;
-            //int row = 16;
-            //GenerateSnake();
-
-            //while (true)
-            //{
-            //    DrawSnake();
-            //    
-            //    Console.BackgroundColor = ConsoleColor.Red;
-            //    row += 2;
-            //    snakePieces.Enqueue(new Position(row % 100, 10));
-            //    Thread.Sleep(10);
-            //}
         }
 
         public static void PlayGame()
@@ -84,7 +64,7 @@ namespace Snake
             ClearGameField();
             GenerateSnake();
 
-            while (true)
+            while (isSnakeAlive)
             {
                 if (Console.KeyAvailable)
                 {
@@ -133,7 +113,6 @@ namespace Snake
             {
                 case DirectionEnum.right:
                     newHead = new Position((head.row + 2)%100, head.col);
-                    snakePieces.Enqueue(newHead);
                     break;
                 case DirectionEnum.left:
                     if (head.row < 2)
@@ -141,7 +120,6 @@ namespace Snake
                         head.row += 100;
                     }
                     newHead = new Position(head.row - 2, head.col);
-                    snakePieces.Enqueue(newHead);
                     break;
                 case DirectionEnum.down:
                     if (head.col < 1)
@@ -149,17 +127,16 @@ namespace Snake
                         head.col += 50;
                     }
                     newHead = new Position(head.row, head.col - 1);
-                    snakePieces.Enqueue(newHead);
                     break;
                 case DirectionEnum.up:
                     newHead = new Position(head.row, (head.col + 1)%50);
-                    snakePieces.Enqueue(newHead);
                     break;
                 default:
                     throw new ArgumentException("Snake has unknown direction.");
             }
 
             MapElementsEnum headHitType = CollisionDetection(newHead);
+            snakePieces.Enqueue(newHead);
 
             switch (headHitType)
             {
@@ -201,7 +178,9 @@ namespace Snake
 
         private static void SnakeIsDeath(int currentScore)
         {
+            isSnakeAlive = false;
             FileHandler scoreFile = new FileHandler(scoresFileName);
+            
             if (scoreFile.IsScoreSaveable(currentScore)) 
             {
                 string congratulationsMessage = "CONGRATULATIONS, YOU MADE IT TO THE TOP!";
