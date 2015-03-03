@@ -38,7 +38,7 @@ namespace Snake
             }
         }
 
-        public static int sleepTime = 500;
+        public static int sleepTime = 200;
         public static int score = 0;
         public static Queue<Position> snakePieces = new Queue<Position>();
         public static List<Score> highScores = new List<Score>();
@@ -232,6 +232,7 @@ namespace Snake
                     SnakeIsDeath(score); // TODO: pass current score
                     break;
                 default:
+                    throw new ArgumentException("Unknown field type!");
                     break;
             }
 
