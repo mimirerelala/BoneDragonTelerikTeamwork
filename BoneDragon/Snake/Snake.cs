@@ -312,26 +312,6 @@ namespace Snake
             DrawField(ConsoleColor.White);
         }
 
-        public static void ClearSnake()
-        {
-            //TODO
-            //Clear snake Queue
-        }
-
-        public static void PrintField()
-        {
-            //TODO
-            //Print game field
-        }
-
-        public static void UpdateFile()
-        {
-            //TODO
-            //Just like printing it but will only update differences on the field
-            //not printing the whole field
-            //can be delayed for first versions
-        }
-
         public static void PrintMenu()
         {
             Console.SetBufferSize(Console.WindowWidth, Console.WindowHeight);
@@ -418,6 +398,9 @@ namespace Snake
         {
             FileHandler scoreFile = new FileHandler(scoresFileName);
             scoreFile.PrintScores();
+            Console.WriteLine("Press enter to go back to menu");
+            Console.ReadLine();
+            PrintMenu();
         }
 
 
