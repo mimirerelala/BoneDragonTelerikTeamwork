@@ -65,9 +65,7 @@ namespace Snake
 			DirectionEnum direction = DirectionEnum.right;
             ClearGameField();
             GenerateSnake();
-            isSnakeAlive = true;
-            sleepTime = 200;
-            score = 0;
+            
 
             Random rng = new Random();
             GenerateFruit(rng);
@@ -306,15 +304,15 @@ namespace Snake
 
         public static void ClearGameField()
         {
-            //TODO
-            //Clear game field
+            isSnakeAlive = true;
+            sleepTime = 200;
+            score = 0;
+            mapElements.Clear();
             Console.Title = "Dragon-Snake";
             Console.WindowHeight = 50;
             Console.WindowWidth = 100;
             Console.BufferHeight = 50;
             Console.BufferWidth = 103;
-            //add PlayIntro() options
-            //add Menu() with options
             DrawField(ConsoleColor.White);
         }
 
