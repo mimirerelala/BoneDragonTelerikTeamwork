@@ -77,11 +77,11 @@ namespace Snake
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine();
             Console.WriteLine();
-            Console.WriteLine("{0,-15} | {1,15:F2} | {2,43}", "Username", "Score", "Date");
+            Console.WriteLine("{0,-15} | {1,15:F2} | {2,63}", "Username", "Score", "Date");
             Console.Write(new string('-', Console.BufferWidth));
             foreach (var player in players)
             {
-                Console.WriteLine("{0,-15} | {1,15:F2} | {2,43}", player.Element("Username").Value, player.Element("Score").Value, player.Element("Date").Value);
+                Console.WriteLine("{0,-15} | {1,15:F2} | {2,63}", player.Element("Username").Value, player.Element("Score").Value, player.Element("Date").Value);
             }
         }
 

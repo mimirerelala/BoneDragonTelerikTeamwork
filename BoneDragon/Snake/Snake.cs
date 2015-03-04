@@ -53,6 +53,10 @@ namespace Snake
 
         static void Main(string[] args)
         {
+            Console.WindowHeight = 50;
+            Console.WindowWidth = 100;
+            Console.BufferHeight = 50;
+            Console.BufferWidth = 103;
             PrintMenu();
         }
 
@@ -211,7 +215,7 @@ namespace Snake
                     Console.Write("  ");
                     break;
                 case MapElementsEnum.Rock:
-                    SnakeIsDeath(score); // TODO: pass current score
+                    SnakeIsDeath(score);
                     break;
                 case MapElementsEnum.Fruit:
                     Console.BackgroundColor = currentSnakeColor;
@@ -231,11 +235,10 @@ namespace Snake
                     GenerateFruit(rng);
                     break;
                 case MapElementsEnum.Snake:
-                    SnakeIsDeath(score); // TODO: pass current score
+                    SnakeIsDeath(score);
                     break;
                 default:
                     throw new ArgumentException("Unknown field type!");
-                    break;
             }
 
             
@@ -245,8 +248,8 @@ namespace Snake
         {
             isSnakeAlive = false;
             FileHandler scoreFile = new FileHandler(scoresFileName);
-            Console.Clear();
             Console.BackgroundColor = ConsoleColor.Black;
+            Console.Clear();
             if (scoreFile.IsScoreSaveable(currentScore)) 
             {
                 string congratulationsMessage = "CONGRATULATIONS, YOU MADE IT TO THE TOP!";
@@ -258,7 +261,6 @@ namespace Snake
                 Console.WriteLine("ENTER A USERNAME: ");
                 Console.SetCursorPosition((Console.WindowWidth / 2) - 2, (Console.WindowHeight / 2) - 1);
                 scoreFile.SaveUserScore(Console.ReadLine(), currentScore);
-                // Go to main menu or quit
                 PrintMenu();
             }
             else
@@ -271,11 +273,12 @@ namespace Snake
                 string scoreMessage = string.Format("SCORE: {0}", currentScore);
                 Console.SetCursorPosition((Console.WindowWidth / 2) - (scoreMessage.Length / 2), Console.WindowHeight / 2);
                 Console.WriteLine(scoreMessage);
-                string quitMessage = "(Press any key to go back to menu!)";
+                string quitMessage = "(Press any key to go back to the main menu..)";
                 Console.ForegroundColor = ConsoleColor.DarkCyan;
                 Console.SetCursorPosition((Console.WindowWidth / 2) - (quitMessage.Length / 2), (Console.WindowHeight / 2) + 2);
                 Console.WriteLine(quitMessage);
-                // Handle input
+                Console.ReadLine();
+                Console.ForegroundColor = ConsoleColor.White;
                 PrintMenu();
             }
         }
@@ -369,13 +372,13 @@ namespace Snake
         public static void PrintMenuSelection(int currentSelectionIndex)
         {
             Console.Clear();
-            Console.WriteLine("                      __    __    __    __");
-            Console.WriteLine("                     /  \\  /  \\  /  \\  /  \\");
-            Console.WriteLine("____________________/  __\\/  __\\/  __\\/  __\\___________________________________");
-            Console.WriteLine("___________________/  /__/  /__/  /__/  /______________________________________");
-            Console.WriteLine("                  | / \\   / \\   / \\   / \\  \\____");
-            Console.WriteLine("                  |/   \\_/   \\_/   \\_/   \\    o \\");
-            Console.WriteLine("                                           \\_____/--<");
+            Console.WriteLine("                                       __    __    __    __");
+            Console.WriteLine("                                      /  \\  /  \\  /  \\  /  \\");
+            Console.WriteLine("_____________________________________/  __\\/  __\\/  __\\/  __\\______________________________________");
+            Console.WriteLine("____________________________________/  /__/  /__/  /__/  /_________________________________________");
+            Console.WriteLine("                                   | / \\   / \\   / \\   / \\  \\____");
+            Console.WriteLine("                                   |/   \\_/   \\_/   \\_/   \\    o \\");
+            Console.WriteLine("                                                            \\_____/--<");
             int initialStart = Console.WindowHeight / 2 - (int)Math.Ceiling((double)menuEntries.Length / 2);
             int menuSpacing = 0;
             for (int i = 0; i < menuEntries.Length; i++)
@@ -401,7 +404,10 @@ namespace Snake
         {
             FileHandler scoreFile = new FileHandler(scoresFileName);
             scoreFile.PrintScores();
-            Console.WriteLine("Press enter to go back to menu");
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.WriteLine("Press any key to go back to the main menu..");
+            Console.ForegroundColor = ConsoleColor.White;
             Console.ReadLine();
             PrintMenu();
         }
