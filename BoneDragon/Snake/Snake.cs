@@ -62,6 +62,8 @@ namespace Snake
             ClearGameField();
             GenerateSnake();
             isSnakeAlive = true;
+            sleepTime = 200;
+            score = 0;
 
             Random rng = new Random();
             GenerateFruit(rng);
